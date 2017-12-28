@@ -6,4 +6,5 @@ package com.busy.minds.gameobjects;
 public interface IGameAction {
 
     void Execute();
+
 }

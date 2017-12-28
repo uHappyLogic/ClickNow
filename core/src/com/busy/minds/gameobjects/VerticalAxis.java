@@ -8,6 +8,21 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class VerticalAxis extends Actor {
 
+    public VerticalAxis(
+        Vector2 position
+        , float width
+        , IBordersProvider bordersProvider
+    ){
+        setX(position.x);
+        setY(position.y);
+        setWidth(width);
+        setHeight(120);
+
+        this.bordersProvider = bordersProvider;
+        speed = 1000;
+        jeden = 1;
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -22,36 +37,20 @@ public class VerticalAxis extends Actor {
     public void act(float delta) {
         super.act(delta);
         setX((getX()+speed * delta * jeden));
-        if(getX()>= axis.GetRightBorder()){
+        if(getX() + getWidth() / 2 >= bordersProvider.GetRightBorder()){
           jeden=-1;
         }
         else
-        if(getX()<= axis.GetLeftBorder()){
+        if(getX() - getWidth() / 2 <= bordersProvider.GetLeftBorder()){
             jeden=1;
-
         }
     }
 
-    public void SetAxis(Axis axis){
-        this.axis = axis;
-    }
-
-    public VerticalAxis(Vector2 position, float width){
-
-        setX(position.x);
-        setY(position.y);
-        setWidth(width);
-        setHeight(120);
-
-        speed = 1000;
-        jeden = 1;
-    }
-
-    public void SpeedUp(float speed){
+    public void ChangeSpeed(float speed){
         this.speed += speed;
     }
 
-    Axis axis;
-    float speed;
-    int jeden;
+    private IBordersProvider bordersProvider;
+    private float speed;
+    private int jeden;
 }

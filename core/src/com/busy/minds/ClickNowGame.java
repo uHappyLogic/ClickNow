@@ -22,7 +22,9 @@ public class ClickNowGame extends ApplicationAdapter {
 		pointsCounter = new PointsCounter(textBitmap);
 		axis= new Axis(new Vector2(50, 275 ), new Vector2(500,275), pointsCounter);
 		axis.AddVertcalAxis();
-		axis.addHitBlock();
+		axis.addGreenBlock();
+		axis.addRedBlock();
+
 		timer=new Timer(timeSeconds,timeMinutes=4);
 	}
 

@@ -2,6 +2,7 @@ package com.busy.minds.gameobjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Axis extends Actor {
+public class Axis extends Actor implements IBordersProvider {
 
     public Axis(Vector2 begin, Vector2 end, PointsCounter pointsCounter){
         this.pointsCounter = pointsCounter;
@@ -33,6 +34,7 @@ public class Axis extends Actor {
             currentHitBlock.draw(batch,parentAlpha);
         }
 
+        // todo check this null
         if (verticalAxis != null)
             verticalAxis.draw(batch,parentAlpha);
     }
@@ -43,6 +45,9 @@ public class Axis extends Actor {
 
         if (verticalAxis != null)
             verticalAxis.act(delta);
+
+        for (HitBlock hitBlock : hitBlocks)
+            hitBlock.act(delta);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
             spaceHit();
@@ -66,38 +71,65 @@ public class Axis extends Actor {
         }
     }
 
+    public void addGreenBlock(){
+
+        int width = GetRandomWidth(50, 20);
+
+        List<IGameAction> greenBlockGameActions = new ArrayList<>();
+        greenBlockGameActions.add(new AddPointsAction(pointsCounter, width));
+        greenBlockGameActions.add(new ChangeVerticalAxisAction(verticalAxis, 300));
+
+        HitBlock redBlock=new HitBlock(GetRandomPointOnAxis(width)
+                , width
+                , greenBlockGameActions
+                , Color.GREEN
+                , this
+        );
+
+        hitBlocks.add(redBlock);
+    }
+
+    public void addRedBlock(){
+        int width = GetRandomWidth(50, 20);
+
+        List<IGameAction> redBlockGameActions = new ArrayList<IGameAction>();//GameAction2
+        redBlockGameActions.add(new AddPointsAction(pointsCounter, -width));
+        redBlockGameActions.add(new ChangeVerticalAxisAction(verticalAxis, 600));
+
+        HitBlock redBlock = new HitBlock(GetRandomPointOnAxis(width)
+                , width
+                , redBlockGameActions
+                , Color.RED
+                , this
+        );
+
+        hitBlocks.add(redBlock);
+    }
+
+    private int GetRandomWidth(int max, int min) {
+        Random r = new Random();
+        return (int) (r.nextFloat() * (float)(max - min) + min);
+    }
+
     private Vector2 GetRandomPointOnAxis(float offset){
         Random r = new Random();
         return new Vector2(beginOfAxis).add(new Vector2((endOfAxis.x - this.beginOfAxis.x - offset) * r.nextFloat() , 0));
     }
 
-    public void addHitBlock(){
-        Random r = new Random();
-            // TODO study this shit
-        float width = r.nextFloat() * (50f - 20f) + 20f;
-
-        List<IGameAction> hitBlockGameActions = new ArrayList<IGameAction>();
-        hitBlockGameActions.add(new AddPointsAction(pointsCounter, 100));
-        hitBlockGameActions.add(new SpeedUpVerticalAxisAction(verticalAxis));
-
-        HitBlock hitBlock = new HitBlock(GetRandomPointOnAxis(width)
-                , width
-                , hitBlockGameActions
-        );
-
-        hitBlocks.add(hitBlock);
-    }
-
     public void AddVertcalAxis(){
         float width = 10;
-        this.verticalAxis = new VerticalAxis(GetRandomPointOnAxis(width), width);
-        verticalAxis.SetAxis(this);
+        this.verticalAxis = new VerticalAxis(
+            GetRandomPointOnAxis(width)
+            , width
+            , this);
     }
 
+    @Override
     public float GetLeftBorder() {
         return beginOfAxis.x;
     }
 
+    @Override
     public float GetRightBorder() {
         return endOfAxis.x;
     }
@@ -107,4 +139,5 @@ public class Axis extends Actor {
     VerticalAxis verticalAxis;
     List<HitBlock> hitBlocks = new ArrayList<HitBlock>();
     private PointsCounter pointsCounter;
+
 }
