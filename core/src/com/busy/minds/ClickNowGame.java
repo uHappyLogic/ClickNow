@@ -20,12 +20,14 @@ public class ClickNowGame extends ApplicationAdapter {
 		textBitmap =new BitmapFont();
 		textBitmap.setColor(Color.BLACK);
 		pointsCounter = new PointsCounter(textBitmap);
-		axis= new Axis(new Vector2(50, 275 ), new Vector2(500,275), pointsCounter);
+		axis= new Axis(new Vector2(50, 275 ), new Vector2(750,275), pointsCounter);
 		axis.AddVertcalAxis();
-		axis.addGreenBlock();
-		axis.addRedBlock();
+		axis.AddGreenBlock();
+		axis.AddRedBlock();
+
 
 		timer=new Timer(timeSeconds,timeMinutes=4);
+		speedView=new SpeedView(10000);
 	}
 
 	@Override
@@ -39,8 +41,9 @@ public class ClickNowGame extends ApplicationAdapter {
 		timer.TimerWork();
 		batch.begin();
 		//batch.draw(img, 0, 0);
-		textBitmap.draw(batch,"CLICK NOW GAME!!!",320,420);
+		textBitmap.draw(batch,"CLICK NOW GAME!!!",320,420);//tworzenie napisów w oknie
 		textBitmap.draw(batch, timer.DrawTime(),100,120);
+		textBitmap.draw(batch, speedView.DrawSpeed(),100,100);
 
 		pointsCounter.draw(batch, 0);
 
@@ -55,8 +58,12 @@ public class ClickNowGame extends ApplicationAdapter {
 	}
 	private double timeSeconds;
 	private int timeMinutes;
+
 	private BitmapFont textBitmap;
 	private Timer timer;
 	private Axis axis;
+	private SpeedView speedView;
 	private PointsCounter pointsCounter;
+	speed speed;
+
 }

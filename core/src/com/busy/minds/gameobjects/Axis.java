@@ -13,12 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Axis extends Actor implements IBordersProvider {
+public class Axis extends Actor implements IBordersProvider, IBlockManager {
 
     public Axis(Vector2 begin, Vector2 end, PointsCounter pointsCounter){
         this.pointsCounter = pointsCounter;
         this.beginOfAxis = begin;
         this.endOfAxis = end;
+    }
+
+    @Override
+    public void RemoveBlock(HitBlock hitBlock){
+        hitBlocksToRemove.add(hitBlock);
     }
 
     @Override
@@ -52,58 +57,88 @@ public class Axis extends Actor implements IBordersProvider {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
             spaceHit();
         }
+
+        hitBlocks.removeAll(hitBlocksToRemove);
+        hitBlocksToRemove.clear();
+        hitBlocks.addAll(hitBlocksToAdd);
+        hitBlocksToAdd.clear();
     }
+
 
     private void spaceHit(){
 
         for(HitBlock currentHitBlock : hitBlocks){
             Rectangle r = new Rectangle(
-                    currentHitBlock.getX(),
-                    currentHitBlock.getY() - currentHitBlock.getHeight() / 2,
-                    currentHitBlock.getWidth(),
-                    currentHitBlock.getHeight()
-                    );
+                currentHitBlock.getX(),
+                currentHitBlock.getY() - currentHitBlock.getHeight() / 2,
+                currentHitBlock.getWidth(),
+                currentHitBlock.getHeight()
+            );
 
-            if (r.contains(new Vector2(verticalAxis.getX(), verticalAxis.getY()))){
+            if (
+                r.contains(new Vector2(verticalAxis.getX(), verticalAxis.getY()))
+            ){
                 for (IGameAction a : currentHitBlock.getGameActions())
                     a.Execute();
             }
         }
     }
 
-    public void addGreenBlock(){
+    @Override
+    public void AddGreenBlock(){
 
         int width = GetRandomWidth(50, 20);
 
-        List<IGameAction> greenBlockGameActions = new ArrayList<>();
-        greenBlockGameActions.add(new AddPointsAction(pointsCounter, width));
-        greenBlockGameActions.add(new ChangeVerticalAxisAction(verticalAxis, 300));
-
-        HitBlock redBlock=new HitBlock(GetRandomPointOnAxis(width)
+        HitBlock greenBlock = new HitBlock(GetRandomPointOnAxis(width)
                 , width
-                , greenBlockGameActions
                 , Color.GREEN
                 , this
         );
 
-        hitBlocks.add(redBlock);
+        greenBlock.AddGameAction(new AddPointsAction(pointsCounter, width+10));
+        greenBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 300));
+        greenBlock.AddGameAction(new RemoveBlockAction(this, greenBlock));
+        greenBlock.AddGameAction(new AddNewRandomBlock(this));
+        hitBlocksToAdd.add(greenBlock);
+
     }
 
-    public void addRedBlock(){
+    @Override
+    public void AddPurpleBlock(){
         int width = GetRandomWidth(50, 20);
 
-        List<IGameAction> redBlockGameActions = new ArrayList<IGameAction>();//GameAction2
-        redBlockGameActions.add(new AddPointsAction(pointsCounter, -width));
-        redBlockGameActions.add(new ChangeVerticalAxisAction(verticalAxis, 600));
+        HitBlock purpleBlock = new HitBlock(GetRandomPointOnAxis(width)
+                , width
+                , Color.PURPLE
+                , this
+        );
+        purpleBlock.AddGameAction(new AddPointsAction(pointsCounter, width-10));
+        purpleBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 300));
+        purpleBlock.AddGameAction(new RemoveBlockAction(this, purpleBlock));
+        purpleBlock.AddGameAction(new AddNewRandomBlock(this));
+        if (hitBlocks.size()<=3){    //czemu sa 2 wiecej kwadraty? dwa sa to remove? ale to by było bez sensu 2 piewsza nie sa dodawane do listy? ale sa z niej jakos usuwane
+        purpleBlock.AddGameAction(new AddNewRandomBlock(this));}
+
+        hitBlocksToAdd.add(purpleBlock);
+
+    }
+
+
+    @Override
+    public void AddRedBlock(){
+        int width = GetRandomWidth(50, 20);
 
         HitBlock redBlock = new HitBlock(GetRandomPointOnAxis(width)
                 , width
-                , redBlockGameActions
                 , Color.RED
                 , this
         );
 
-        hitBlocks.add(redBlock);
+        redBlock.AddGameAction(new AddPointsAction(pointsCounter, -width));
+        redBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 600));
+        redBlock.AddGameAction(new RemoveBlockAction(this, redBlock));
+        redBlock.AddGameAction(new AddNewRandomBlock(this));
+        hitBlocksToAdd.add(redBlock);
     }
 
     private int GetRandomWidth(int max, int min) {
@@ -117,11 +152,12 @@ public class Axis extends Actor implements IBordersProvider {
     }
 
     public void AddVertcalAxis(){
-        float width = 10;
+        float width = 5;
         this.verticalAxis = new VerticalAxis(
             GetRandomPointOnAxis(width)
             , width
             , this);
+
     }
 
     @Override
@@ -138,6 +174,8 @@ public class Axis extends Actor implements IBordersProvider {
     Vector2 endOfAxis;
     VerticalAxis verticalAxis;
     List<HitBlock> hitBlocks = new ArrayList<HitBlock>();
+    List<HitBlock> hitBlocksToRemove = new ArrayList<HitBlock>();
+    List<HitBlock> hitBlocksToAdd = new ArrayList<HitBlock>();
     private PointsCounter pointsCounter;
 
 }
