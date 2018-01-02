@@ -58,6 +58,6 @@ public class VerticalAxis extends Actor implements speed{
         return "Prętkosc: "+sp;
     }
     private IBordersProvider bordersProvider;
-    private float speed;
+    public float speed;
     private int jeden;
 }

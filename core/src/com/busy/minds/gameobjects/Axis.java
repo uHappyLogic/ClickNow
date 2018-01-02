@@ -157,6 +157,10 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
             GetRandomPointOnAxis(width)
             , width
             , this);
+    }
+
+    public VerticalAxis ReturnVertical(){
+        return verticalAxis;
 
     }
 
