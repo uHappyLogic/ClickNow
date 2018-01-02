@@ -2,12 +2,19 @@ package com.busy.minds.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class PointsCounter extends Actor {
 
-    public PointsCounter(BitmapFont textBitmap){
+    public PointsCounter(
+            BitmapFont textBitmap
+            , Vector2 position
+            , String formattedText
+    ){
         this.textBitmap = textBitmap;
+        this.position = position;
+        this.formattedText = formattedText;
         totalPoints = 0;
     }
 
@@ -15,9 +22,17 @@ public class PointsCounter extends Actor {
         totalPoints += count;
     }
 
+    public void SetPoints(int count){
+        totalPoints = count;
+    }
+
+    public int GetPoints() {
+        return  totalPoints;
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        textBitmap.draw(batch, GetPointsMessage(),320,380);
+        textBitmap.draw(batch, GetPointsMessage(),position.x, position.y);
     }
 
     public void ResetCounter(){
@@ -25,9 +40,11 @@ public class PointsCounter extends Actor {
     }
 
     private String GetPointsMessage(){
-        return String.format("You have earned %d", totalPoints);
+        return String.format(formattedText, totalPoints);
     }
 
     int totalPoints;
     private BitmapFont textBitmap;
+    Vector2 position;
+    private final String formattedText;
 }

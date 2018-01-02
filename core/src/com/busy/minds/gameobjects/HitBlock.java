@@ -33,8 +33,8 @@ public class HitBlock extends Actor {
         }else jeden = 1;
 
         if (random.nextFloat()<=0.3f){
-        speed = random.nextFloat()*1000+100;}
-        else speed = random.nextFloat()*1000;
+        speed = random.nextFloat()*100+10;}
+        else speed = random.nextFloat()*100;
     }
 
     @Override
