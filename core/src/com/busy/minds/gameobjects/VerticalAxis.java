@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 
-public class VerticalAxis extends Actor {
+public class VerticalAxis extends Actor{
 
     public VerticalAxis(
         Vector2 position
@@ -46,11 +46,14 @@ public class VerticalAxis extends Actor {
         }
     }
 
-    public void ChangeSpeed(float speed){
+
+
+    public void ChangeSpeed(float speed) {
         this.speed += speed;
+
     }
 
     private IBordersProvider bordersProvider;
-    private float speed;
+    public float speed;
     private int jeden;
 }

@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
+import java.util.Random;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,7 +15,6 @@ public class HitBlock extends Actor {
     public HitBlock(
             Vector2 position
             , float width
-            , List<IGameAction> gameAction
             , Color color
             , IBordersProvider bordersProvider
     ){
@@ -25,9 +25,16 @@ public class HitBlock extends Actor {
         setHeight(50);
 
         this.color = color;
-        this.gameActions = gameAction;
-        jeden = 1;
-        speed = 300;
+        this.gameActions = new ArrayList<>();
+        Random random=new Random();
+
+        if(random.nextFloat()<=0.5f){
+            jeden = -1;
+        }else jeden = 1;
+
+        if (random.nextFloat()<=0.3f){
+        speed = random.nextFloat()*1000+100;}
+        else speed = random.nextFloat()*1000;
     }
 
     @Override
@@ -53,6 +60,11 @@ public class HitBlock extends Actor {
         }
     }
 
+
+    public void AddGameAction(IGameAction gameAction) {
+        gameActions.add(gameAction);
+    }
+
     public List<IGameAction> getGameActions() {
         return gameActions;
     }
@@ -63,4 +75,5 @@ public class HitBlock extends Actor {
     private int jeden;
     private Color color;
     private IBordersProvider bordersProvider;
+
 }
