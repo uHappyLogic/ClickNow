@@ -57,7 +57,6 @@ public class ClickNowGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		textBitmap.dispose();
-		//img.dispose();
 	}
 	private double timeSeconds;
 	private int timeMinutes;
@@ -67,6 +66,4 @@ public class ClickNowGame extends ApplicationAdapter {
 	private Axis axis;
 	private SpeedView speedView;
 	private PointsCounter pointsCounter;
-	speed speed;
-
 }

@@ -9,9 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public class SpeedView extends Actor{
 
-
-
-
     public SpeedView(BitmapFont bitmap, VerticalAxis verticalAxis){
 
         this.verticalAxis=verticalAxis;
@@ -21,12 +18,8 @@ public class SpeedView extends Actor{
     @Override
     public void draw(Batch batch, float parentAlpha){
 
-        bitmap.draw(batch, "Your speed: %d"+verticalAxis.speed,100,100);
-
-
+        bitmap.draw(batch, "Your speed: " + verticalAxis.speed,100,100);
     }
-
-
 
     BitmapFont bitmap;
     VerticalAxis verticalAxis;
