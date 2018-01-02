@@ -20,10 +20,18 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 		textBitmap =new BitmapFont();
 		textBitmap.setColor(Color.BLACK);
 
+		recordManager = new RecordManager();
+
+		recordCounter = new PointsCounter(
+				textBitmap
+				, new Vector2(320, 400)
+				, "Your record is %d"
+		);
+
+		recordCounter.SetPoints(recordManager.GetRecord());
+
 		StartNewGame();
 	}
-
-
 
 	@Override
 	public void render () {
@@ -68,19 +76,13 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 	@Override
 	public void StartNewGame() {
 
-		timeSeconds = 15;
-		timeMinutes = 0;
+		timeSeconds =30;
+		timeMinutes = 2;
 
 		pointsCounter = new PointsCounter(
 				textBitmap
 				, new Vector2(320, 380)
 				, "You have earned %d"
-		);
-
-		recordCounter = new PointsCounter(
-				textBitmap
-				, new Vector2(320, 400)
-				, "Your record is %d"
 		);
 
 		axis= new Axis(new Vector2(50, 275 ), new Vector2(750,275), pointsCounter);
@@ -97,6 +99,10 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 	@Override
 	public void ShowStartScreen() {
 
+		if (pointsCounter.GetPoints() > recordManager.GetRecord()) {
+			recordManager.SetRecord(pointsCounter.GetPoints());
+			recordCounter.SetPoints(pointsCounter.GetPoints());
+		}
 
 		isGameRunning = false;
 	}
@@ -111,4 +117,5 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 	private PointsCounter recordCounter;
 	private PointsCounter pointsCounter;
 	private boolean isGameRunning;
+	private RecordManager recordManager;
 }

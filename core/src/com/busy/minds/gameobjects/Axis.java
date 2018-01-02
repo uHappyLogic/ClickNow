@@ -96,7 +96,7 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         );
 
         greenBlock.AddGameAction(new AddPointsAction(pointsCounter, width+10));
-        greenBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 300));
+        greenBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 15));
         greenBlock.AddGameAction(new RemoveBlockAction(this, greenBlock));
         greenBlock.AddGameAction(new AddNewRandomBlock(this));
         hitBlocksToAdd.add(greenBlock);
@@ -113,7 +113,7 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
                 , this
         );
         purpleBlock.AddGameAction(new AddPointsAction(pointsCounter, width-10));
-        purpleBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 300));
+        purpleBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 15));
         purpleBlock.AddGameAction(new RemoveBlockAction(this, purpleBlock));
         purpleBlock.AddGameAction(new AddNewRandomBlock(this));
         if (hitBlocks.size()<=3){    //czemu sa 2 wiecej kwadraty? dwa sa to remove? ale to by było bez sensu 2 piewsza nie sa dodawane do listy? ale sa z niej jakos usuwane
@@ -135,7 +135,7 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         );
 
         redBlock.AddGameAction(new AddPointsAction(pointsCounter, -width));
-        redBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 600));
+        redBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 30));
         redBlock.AddGameAction(new RemoveBlockAction(this, redBlock));
         redBlock.AddGameAction(new AddNewRandomBlock(this));
         hitBlocksToAdd.add(redBlock);

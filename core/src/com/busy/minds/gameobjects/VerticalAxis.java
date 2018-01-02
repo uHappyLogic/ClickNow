@@ -19,7 +19,7 @@ public class VerticalAxis extends Actor{
         setHeight(120);
 
         this.bordersProvider = bordersProvider;
-        speed = 1000;
+        speed = 100;
         jeden = 1;
     }
 

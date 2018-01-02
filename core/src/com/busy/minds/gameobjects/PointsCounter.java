@@ -22,6 +22,14 @@ public class PointsCounter extends Actor {
         totalPoints += count;
     }
 
+    public void SetPoints(int count){
+        totalPoints = count;
+    }
+
+    public int GetPoints() {
+        return  totalPoints;
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         textBitmap.draw(batch, GetPointsMessage(),position.x, position.y);
