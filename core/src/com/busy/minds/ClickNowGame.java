@@ -10,12 +10,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.busy.minds.gameobjects.*;
-
+/**klasa generująca wszystkie elemeny w oknie*/
 public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 	SpriteBatch batch;
 	Texture img;
 	@Override
 	public void create () {
+
 		batch = new SpriteBatch();
 		textBitmap =new BitmapFont();
 		textBitmap.setColor(Color.BLACK);
@@ -31,6 +32,7 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 		recordCounter.SetPoints(recordManager.GetRecord());
 
 		StartNewGame();
+		ShowStartScreen();
 	}
 
 	@Override
@@ -50,9 +52,9 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 		batch.begin();
 
 		if (!isGameRunning) {
-			textBitmap.draw(batch,"Press spacebar to start",320,420);
+			textBitmap.draw(batch,"Press M to start",320,420);
 
-			if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+			if (Gdx.input.isKeyJustPressed(Input.Keys.M)){
 				StartNewGame();
 			}
 		} else {
@@ -77,7 +79,7 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 	public void StartNewGame() {
 
 		timeSeconds =30;
-		timeMinutes = 2;
+		timeMinutes = 0;
 
 		pointsCounter = new PointsCounter(
 				textBitmap

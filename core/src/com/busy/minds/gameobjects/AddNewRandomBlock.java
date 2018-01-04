@@ -7,6 +7,7 @@ import java.util.List;
 
 
 /**
+ * klasa dodawania nowegolosowego hitBlocka
  * Created by Jan on 28.12.2017.
  */
 public class AddNewRandomBlock implements IGameAction{
@@ -15,6 +16,7 @@ public class AddNewRandomBlock implements IGameAction{
 
        this.blockManager=blockManager;
     }
+    /**nadpisana metoda dodająca losowy blok*/
     @Override
     public void Execute() {
         List <String>availableBlocks=new ArrayList<>();
@@ -29,18 +31,8 @@ public class AddNewRandomBlock implements IGameAction{
                break;
            case "red":blockManager.AddRedBlock();
                break;
-
        }
 
-//        Random random = new Random();
-//        if(random.nextFloat()>0.6f){
-//            blockManager.AddGreenBlock();
-//        }else
-//        if(random.nextFloat()<0.3f){
-//            blockManager.AddRedBlock();
-//        }else{
-//            blockManager.AddPurpleBlock();
-//        }
     }
     IBlockManager blockManager;
 }
