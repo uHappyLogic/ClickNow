@@ -30,8 +30,7 @@ public class VerticalAxis extends Actor{
         shapeRenderer.setColor(0, 1, 1, 1);
         shapeRenderer.rect(getX(), getY() - getHeight() / 2, getWidth(), getHeight());
         shapeRenderer.end();
-
-
+        shapeRenderer.dispose();
     }
     /**poruszanie się osi pionowej*/
     @Override

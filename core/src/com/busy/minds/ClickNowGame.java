@@ -52,6 +52,7 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 		}
 
 		batch.begin();
+
 		textBitmap.draw(batch,"Press SPACE to hit the block or P to pause the game",220,150);
 		textBitmap.draw(batch,"CLICK NOW GAME!!!",310,420);
 		textBitmap.draw(batch, timer.DrawTime(),50,100);

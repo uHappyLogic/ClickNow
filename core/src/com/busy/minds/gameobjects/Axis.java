@@ -38,6 +38,8 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         shapeRenderer.rectLine(beginOfAxis, endOfAxis, 5);
         shapeRenderer.end();
 
+        shapeRenderer.dispose();
+
         //ryzowanie bloków na osi
         for (HitBlock currentHitBlock : hitBlocks) {
             currentHitBlock.draw(batch,parentAlpha);
@@ -74,7 +76,8 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
     /**metoda sprawdzająca czy gracz trafił w hitBlocka i wyonuje akcje bloku który został trafiony*/
     private void spaceHit(){
 
-        liczba =true;
+        boolean applyPenalty = true;
+
         for(HitBlock currentHitBlock : hitBlocks){
             Rectangle r = new Rectangle(
                 currentHitBlock.getX(),
@@ -86,20 +89,15 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
             if (
                 r.contains(new Vector2(verticalAxis.getX(), verticalAxis.getY()))
             ){
-                liczba=false;
+                applyPenalty = false;
                 //wykonywane sas wwszystkie akcje gry w zaleznosci jaki trfimy hitBlock
                 for (IGameAction a : currentHitBlock.getGameActions())
                     a.Execute();
-
-            }
-            else{
-                if (liczba) {
-                    new AddPointsAction(pointsCounter, 20).Execute();// czemu dodaje sie 2 razy
-                    liczba=false;
-                }
-
             }
         }
+
+        if (applyPenalty)
+            new AddPointsAction(pointsCounter, -20).Execute();
     }
 /**metoda pozwalająca na dodanie zielonego boku*/
     @Override
@@ -218,6 +216,4 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
     /**liczba bonusowo dodanych blokw*/
     private int blockCount;
     private AddPointsAction addPointsAction;
-    private boolean liczba;
-
 }

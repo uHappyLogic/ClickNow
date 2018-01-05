@@ -44,6 +44,7 @@ public class HitBlock extends Actor {
         shapeRenderer.setColor(color);
         shapeRenderer.rect(getX(), getY() - getHeight() / 2, getWidth(), getHeight());
         shapeRenderer.end();
+        shapeRenderer.dispose();
     }
     /**ustawienie losowej prędkości bloku*/
     public void RandomSpeedOfBlock(Random random){
