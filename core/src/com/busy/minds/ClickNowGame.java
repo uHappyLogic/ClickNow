@@ -3,6 +3,7 @@ package com.busy.minds;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -82,7 +83,7 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 	@Override
 	public void StartNewGame() {
 
-		timeSeconds =30;
+		timeSeconds =50;
 		timeMinutes = 0;
 
 		pointsCounter = new PointsCounter(
@@ -124,6 +125,7 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 	public void PauseTheGame() {
 		isGameRunning = false;
 	}
+
 
 	/**czas w sekundach*/
 	private int timeSeconds;

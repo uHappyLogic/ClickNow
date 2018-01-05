@@ -74,6 +74,7 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
     /**metoda sprawdzająca czy gracz trafił w hitBlocka i wyonuje akcje bloku który został trafiony*/
     private void spaceHit(){
 
+        liczba =true;
         for(HitBlock currentHitBlock : hitBlocks){
             Rectangle r = new Rectangle(
                 currentHitBlock.getX(),
@@ -85,9 +86,18 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
             if (
                 r.contains(new Vector2(verticalAxis.getX(), verticalAxis.getY()))
             ){
+                liczba=false;
                 //wykonywane sas wwszystkie akcje gry w zaleznosci jaki trfimy hitBlock
                 for (IGameAction a : currentHitBlock.getGameActions())
                     a.Execute();
+
+            }
+            else{
+                if (liczba) {
+                    new AddPointsAction(pointsCounter, 20).Execute();// czemu dodaje sie 2 razy
+                    liczba=false;
+                }
+
             }
         }
     }
@@ -104,7 +114,7 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         );
         //akcje wykonywanepodczac trafienia spacja w blok
         //dodanie punktów
-        greenBlock.AddGameAction(new AddPointsAction(pointsCounter, 100-width));
+        greenBlock.AddGameAction(new AddPointsAction(pointsCounter, 100));
         //zwiekszenie pretkosci osi pionowej
         greenBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 10));
         //usuniecie tego bloku z osi poziomej
@@ -129,8 +139,10 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         purpleBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 5));
         purpleBlock.AddGameAction(new RemoveBlockAction(this, purpleBlock));
         purpleBlock.AddGameAction(new AddNewRandomBlock(this));
-        if ((hitBlocks.size()+hitBlocksToRemove.size()+hitBlocksToAdd.size())<=3){    //czemu sa 2 wiecej kwadraty? dwa sa to remove? ale to by było bez sensu 2 piewsza nie sa dodawane do listy? ale sa z niej jakos usuwane
-        purpleBlock.AddGameAction(new AddNewRandomBlock(this));}
+        if (blockCount <=1){    //czemu sa 2 wiecej kwadraty? dwa sa to remove? ale to by było bez sensu 2 piewsza nie sa dodawane do listy? ale sa z niej jakos usuwane
+        purpleBlock.AddGameAction(new AddNewRandomBlock(this));
+        blockCount++;
+        }
 
         hitBlocksToAdd.add(purpleBlock);
 
@@ -153,7 +165,10 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         redBlock.AddGameAction(new AddNewRandomBlock(this));
         hitBlocksToAdd.add(redBlock);
     }
-/**metoda zwracająca losową artosc z zakresu max, min*/
+
+
+
+    /**metoda zwracająca losową artosc z zakresu max, min*/
     private int GetRandomWidth(int max, int min) {
         Random r = new Random();
         return (int) (r.nextFloat() * (float)(max - min) + min);
@@ -200,5 +215,9 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
     List<HitBlock> hitBlocksToAdd = new ArrayList<HitBlock>();
     /**obiekt klasy  PointCounter*/
     private PointsCounter pointsCounter;
+    /**liczba bonusowo dodanych blokw*/
+    private int blockCount;
+    private AddPointsAction addPointsAction;
+    private boolean liczba;
 
 }
