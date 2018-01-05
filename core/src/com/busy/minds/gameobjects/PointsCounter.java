@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-/**klasa licząca zdobyte punkty*/
+/**klasa liczenia punktów*/
 public class PointsCounter extends Actor {
 
     public PointsCounter(
@@ -40,6 +40,7 @@ public class PointsCounter extends Actor {
     }
     /**zdobyte punkty*/
     int totalPoints;
+    /**obirkt BitmapFont*/
     private BitmapFont textBitmap;
     /**lokalizacja wypisanego wyniku w oknie*/
     Vector2 position;

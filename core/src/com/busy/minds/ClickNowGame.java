@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.busy.minds.gameobjects.*;
-/**klasa generująca wszystkie elemeny w oknie*/
+/**klasa ClickNowGame generująca wszystkie elemeny w oknie*/
 public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 	SpriteBatch batch;
 	Texture img;
@@ -47,20 +47,24 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 		if (isGameRunning) {
 			axis.act(delta);
 			timer.TimerWork(delta);
+			if (Gdx.input.isKeyJustPressed(Input.Keys.P))PauseTheGame();
 		}
 
 		batch.begin();
-
+		textBitmap.draw(batch,"Press SPACE to hit the block or P to pause the game",220,150);
+		textBitmap.draw(batch,"CLICK NOW GAME!!!",310,420);
+		textBitmap.draw(batch, timer.DrawTime(),50,100);
+		speedView.draw(batch,0);
 		if (!isGameRunning) {
-			textBitmap.draw(batch,"Press M to start",320,420);
+			if (gameHasEnd) {textBitmap.draw(batch, "Press M to start new game or R to resume", 250, 180);
+			}else
+				textBitmap.draw(batch,"Press M to start new game",300,180);
+
 
 			if (Gdx.input.isKeyJustPressed(Input.Keys.M)){
 				StartNewGame();
-			}
-		} else {
-			textBitmap.draw(batch,"CLICK NOW GAME!!!",320,420);//tworzenie napisów w oknie
-			textBitmap.draw(batch, timer.DrawTime(),100,120);
-			speedView.draw(batch,0);
+			}else
+				if(Gdx.input.isKeyJustPressed(Input.Keys.R))ResumeTheGame();
 		}
 
 		pointsCounter.draw(batch, 0);
@@ -74,7 +78,7 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 		batch.dispose();
 		textBitmap.dispose();
 	}
-
+	/**rozpoczyna nową gre*/
 	@Override
 	public void StartNewGame() {
 
@@ -94,10 +98,11 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 		axis.AddRedBlock();
 		speedView=new SpeedView(textBitmap,axis.ReturnVertical());
 		timer=new Timer(timeSeconds,timeMinutes, this);
-
+		gameHasEnd=true;
 		isGameRunning = true;
-	}
 
+	}
+	/**konczy gre, umozliwia rozpoczęcie nowej*/
 	@Override
 	public void ShowStartScreen() {
 
@@ -105,19 +110,41 @@ public class ClickNowGame extends ApplicationAdapter implements IGameManager {
 			recordManager.SetRecord(pointsCounter.GetPoints());
 			recordCounter.SetPoints(pointsCounter.GetPoints());
 		}
-
+		gameHasEnd=false;
+		isGameRunning = false;
+	}
+	/**wznawia gre*/
+	@Override
+	public void ResumeTheGame() {
+		if (gameHasEnd)
+		isGameRunning = true;
+	}
+	/**pauzuje grę*/
+	@Override
+	public void PauseTheGame() {
 		isGameRunning = false;
 	}
 
+	/**czas w sekundach*/
 	private int timeSeconds;
+	/**czas trwania gry w minuach*/
 	private int timeMinutes;
-
+	/**obiekt klasy BitmmapFont*/
 	private BitmapFont textBitmap;
+	/**obiekt klasy Timer*/
 	private Timer timer;
+	/**obiekt klasy Axis*/
 	private Axis axis;
+	/**obiekt klasy SpeedView*/
 	private SpeedView speedView;
+	/**obiekt klasy PointsCounter*/
 	private PointsCounter recordCounter;
+	/**obiekt klasy PointsCounter*/
 	private PointsCounter pointsCounter;
+	/**zmienna okreslajacz czy gra jest w toku czy nie*/
 	private boolean isGameRunning;
+	/**interface RecordManager*/
 	private RecordManager recordManager;
+	/**informuje o tym czy gra sie zakończyła*/
+	private boolean gameHasEnd;
 }

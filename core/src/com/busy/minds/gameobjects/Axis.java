@@ -20,12 +20,12 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         this.beginOfAxis = begin;
         this.endOfAxis = end;
     }
-/**dodanie do lsty hitBlocksToRemove hitBlocka*/
+    /**dodanie do lsty hitBlocksToRemove hitBlocka*/
     @Override
     public void RemoveBlock(HitBlock hitBlock){
         hitBlocksToRemove.add(hitBlock);
     }
-
+    /**metoda tworząca zarys osi poziomej*/
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
@@ -43,7 +43,6 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
             currentHitBlock.draw(batch,parentAlpha);
         }
 
-        // todo check this null
         if (verticalAxis != null)
             verticalAxis.draw(batch,parentAlpha);
     }
@@ -172,31 +171,34 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
             , width
             , this);
     }
-
+    /**metoda zwracajaca os pionową*/
     public VerticalAxis ReturnVertical(){
         return verticalAxis;
 
     }
-
+    /**ustawianie lerej granicy osi*/
     @Override
     public float GetLeftBorder() {
         return beginOfAxis.x;
     }
-
+    /**ustawianie prawej granicy osi*/
     @Override
     public float GetRightBorder() {
         return endOfAxis.x;
     }
-    //początek poziomej osi
+    /**początek poziomej osi*/
     Vector2 beginOfAxis;
-    //koniec poziomej osi
+    /**koniec poziomej osi*/
     Vector2 endOfAxis;
-    //inicjowanie osi pionowej
+    /**obirkt osi pionowej*/
     VerticalAxis verticalAxis;
-    //inicjowanie list których elementy bedo odpowiednio dodawane usuwane z osi poziomej
+    /**lista bloków*/
     List<HitBlock> hitBlocks = new ArrayList<HitBlock>();
+    /**lista bloków do usunięcia*/
     List<HitBlock> hitBlocksToRemove = new ArrayList<HitBlock>();
+    /**lista bloków do dodania*/
     List<HitBlock> hitBlocksToAdd = new ArrayList<HitBlock>();
+    /**obiekt klasy  PointCounter*/
     private PointsCounter pointsCounter;
 
 }

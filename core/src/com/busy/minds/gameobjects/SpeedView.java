@@ -20,9 +20,10 @@ public class SpeedView extends Actor{
     @Override
     public void draw(Batch batch, float parentAlpha){
 
-        bitmap.draw(batch, "Your speed: " + verticalAxis.speed,100,100);
+        bitmap.draw(batch, "Your speed: " + verticalAxis.speed,50,80);
     }
-
+    /**obiekt klasy BitmapFont*/
     BitmapFont bitmap;
+    /**obiekt VerticcalAxis*/
     VerticalAxis verticalAxis;
 }

@@ -1,7 +1,7 @@
 package com.busy.minds.gameobjects;
 
 /**
- * klasa zmiany prędkości osi pionowej
+ * klasa zmiany prędkości
  * Created by Jan on 18.12.2017.
  */
 public class ChangeVerticalAxisAction implements IGameAction {
@@ -18,7 +18,8 @@ public class ChangeVerticalAxisAction implements IGameAction {
     public void Execute() {
         verticalAxis.ChangeSpeed(deltaSpeed);
     }
-
+    /**obiekt klasy VerticalAxis*/
     private VerticalAxis verticalAxis;
+    /**zmiana prędkości*/
     private final int deltaSpeed;
 }

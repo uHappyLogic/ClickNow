@@ -34,5 +34,6 @@ public class AddNewRandomBlock implements IGameAction{
        }
 
     }
+    /**interface IBlockManager*/
     IBlockManager blockManager;
 }

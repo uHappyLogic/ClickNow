@@ -14,7 +14,7 @@ public class Timer {
        this.seconds= timeSeconds;
        this.gameManager = gameManager;
    }
-    /*metoda obsługująca mechanizm dzialania zegara*/
+    /**metoda obsługująca mechanizm dzialania zegara*/
     public void TimerWork(float delta)
     {
         if ((timeMinutes!=0)||(seconds!=0)) {
@@ -43,12 +43,12 @@ public class Timer {
         return String.format("czas %02d:%02d ", timeMinutes, seconds);
     }
 
-    //czas rzeczywisty
+    /**czas rzeczywisty*/
     private double timeSeconds;
-    //interfejs IGameManager
+    /**interfejs IGameManager*/
     private final IGameManager gameManager;
-    //czas w minutach
+    /**czas w minutach*/
     private int timeMinutes;
-    //czas w sekundach
+    /**czas w sekundach*/
     private int seconds;
 }

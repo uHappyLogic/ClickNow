@@ -84,11 +84,15 @@ public class HitBlock extends Actor {
     public List<IGameAction> getGameActions() {
         return gameActions;
     }
-
+    /**lista zawiaerajaca IGameAction*/
     private List<IGameAction> gameActions;
+    /**prędkość HitBlocka*/
     private float speed;
+    /**kierunek poruszania się HitBlocka*/
     private int jeden;
+    /**kolor HitBlocka*/
     private Color color;
+    /**interfejs IBorderProvider*/
     private IBordersProvider bordersProvider;
 
 }

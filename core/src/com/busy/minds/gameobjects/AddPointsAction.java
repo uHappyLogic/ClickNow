@@ -1,7 +1,7 @@
 package com.busy.minds.gameobjects;
 
 /**
- * klasadodawania punktów do tych juz uzyskanych
+ * klasa akcji dodawania punktów do tych juz uzyskanych
  * Created by Jan on 10.12.2017.
  */
 public class AddPointsAction implements IGameAction {
@@ -10,12 +10,13 @@ public class AddPointsAction implements IGameAction {
         this.pointsCounter = pointsCounter;
         this.points = points;
     }
-/**metoda dodająca punkty*/
+    /**metoda dodająca punkty*/
     @Override
     public void Execute() {
         pointsCounter.AddPoints(points);
     }
-
+    /**obiekt  PointCounter*/
     PointsCounter pointsCounter;
+    /**liczba punktów*/
     int points;
 }
