@@ -19,8 +19,8 @@ public class RemoveBlockAction implements IGameAction {
     public void Execute() {
         blockManager.RemoveBlock(hitBlock);
     }
-    //interfejs
+    /**interfejs IBlockManager dodajaczy usuwający bloki*/
     private final IBlockManager blockManager;
-    //HitBlock
+    /** obiekt HitBlock*/
     private final HitBlock hitBlock;
 }

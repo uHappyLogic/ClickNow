@@ -3,6 +3,7 @@ package com.busy.minds.gameobjects;
 import java.io.*;
 
 /**
+ * klasa rekordów
  * Created by Jan on 02.01.2018.
  */
 public class RecordManager {
@@ -20,7 +21,7 @@ public class RecordManager {
             e.printStackTrace();
         }
     }
-
+    /**metoda tworząca ustawiająca nowy rekord*/
     public void SetRecord(int points) {
         record = points;
 
@@ -36,11 +37,12 @@ public class RecordManager {
             e.printStackTrace();
         }
     }
-
+    /**metoda zwracająca rekord*/
     public int GetRecord(){
         return record;
     }
-
+    /**nazwa pliku do którego zapisywane będa rekordy*/
     private final String filename = "record_file";
+    /**liczba zdobytych punktów*/
     private int record;
 }

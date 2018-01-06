@@ -20,12 +20,12 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         this.beginOfAxis = begin;
         this.endOfAxis = end;
     }
-/**dodanie do lsty hitBlocksToRemove hitBlocka*/
+    /**dodanie do lsty hitBlocksToRemove hitBlocka*/
     @Override
     public void RemoveBlock(HitBlock hitBlock){
         hitBlocksToRemove.add(hitBlock);
     }
-
+    /**metoda tworząca zarys osi poziomej*/
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
@@ -38,12 +38,13 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         shapeRenderer.rectLine(beginOfAxis, endOfAxis, 5);
         shapeRenderer.end();
 
+        shapeRenderer.dispose();
+
         //ryzowanie bloków na osi
         for (HitBlock currentHitBlock : hitBlocks) {
             currentHitBlock.draw(batch,parentAlpha);
         }
 
-        // todo check this null
         if (verticalAxis != null)
             verticalAxis.draw(batch,parentAlpha);
     }
@@ -75,6 +76,8 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
     /**metoda sprawdzająca czy gracz trafił w hitBlocka i wyonuje akcje bloku który został trafiony*/
     private void spaceHit(){
 
+        boolean applyPenalty = true;
+
         for(HitBlock currentHitBlock : hitBlocks){
             Rectangle r = new Rectangle(
                 currentHitBlock.getX(),
@@ -86,11 +89,15 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
             if (
                 r.contains(new Vector2(verticalAxis.getX(), verticalAxis.getY()))
             ){
+                applyPenalty = false;
                 //wykonywane sas wwszystkie akcje gry w zaleznosci jaki trfimy hitBlock
                 for (IGameAction a : currentHitBlock.getGameActions())
                     a.Execute();
             }
         }
+
+        if (applyPenalty)
+            new AddPointsAction(pointsCounter, -20).Execute();
     }
 /**metoda pozwalająca na dodanie zielonego boku*/
     @Override
@@ -105,7 +112,7 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         );
         //akcje wykonywanepodczac trafienia spacja w blok
         //dodanie punktów
-        greenBlock.AddGameAction(new AddPointsAction(pointsCounter, 100-width));
+        greenBlock.AddGameAction(new AddPointsAction(pointsCounter, 100));
         //zwiekszenie pretkosci osi pionowej
         greenBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 10));
         //usuniecie tego bloku z osi poziomej
@@ -130,8 +137,10 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         purpleBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 5));
         purpleBlock.AddGameAction(new RemoveBlockAction(this, purpleBlock));
         purpleBlock.AddGameAction(new AddNewRandomBlock(this));
-        if ((hitBlocks.size()+hitBlocksToRemove.size()+hitBlocksToAdd.size())<=3){    //czemu sa 2 wiecej kwadraty? dwa sa to remove? ale to by było bez sensu 2 piewsza nie sa dodawane do listy? ale sa z niej jakos usuwane
-        purpleBlock.AddGameAction(new AddNewRandomBlock(this));}
+        if (blockCount <=1){    //czemu sa 2 wiecej kwadraty? dwa sa to remove? ale to by było bez sensu 2 piewsza nie sa dodawane do listy? ale sa z niej jakos usuwane
+        purpleBlock.AddGameAction(new AddNewRandomBlock(this));
+        blockCount++;
+        }
 
         hitBlocksToAdd.add(purpleBlock);
 
@@ -154,7 +163,10 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         redBlock.AddGameAction(new AddNewRandomBlock(this));
         hitBlocksToAdd.add(redBlock);
     }
-/**metoda zwracająca losową artosc z zakresu max, min*/
+
+
+
+    /**metoda zwracająca losową artosc z zakresu max, min*/
     private int GetRandomWidth(int max, int min) {
         Random r = new Random();
         return (int) (r.nextFloat() * (float)(max - min) + min);
@@ -172,31 +184,36 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
             , width
             , this);
     }
-
+    /**metoda zwracajaca os pionową*/
     public VerticalAxis ReturnVertical(){
         return verticalAxis;
 
     }
-
+    /**ustawianie lerej granicy osi*/
     @Override
     public float GetLeftBorder() {
         return beginOfAxis.x;
     }
-
+    /**ustawianie prawej granicy osi*/
     @Override
     public float GetRightBorder() {
         return endOfAxis.x;
     }
-    //początek poziomej osi
+    /**początek poziomej osi*/
     Vector2 beginOfAxis;
-    //koniec poziomej osi
+    /**koniec poziomej osi*/
     Vector2 endOfAxis;
-    //inicjowanie osi pionowej
+    /**obirkt osi pionowej*/
     VerticalAxis verticalAxis;
-    //inicjowanie list których elementy bedo odpowiednio dodawane usuwane z osi poziomej
+    /**lista bloków*/
     List<HitBlock> hitBlocks = new ArrayList<HitBlock>();
+    /**lista bloków do usunięcia*/
     List<HitBlock> hitBlocksToRemove = new ArrayList<HitBlock>();
+    /**lista bloków do dodania*/
     List<HitBlock> hitBlocksToAdd = new ArrayList<HitBlock>();
+    /**obiekt klasy  PointCounter*/
     private PointsCounter pointsCounter;
-
+    /**liczba bonusowo dodanych blokw*/
+    private int blockCount;
+    private AddPointsAction addPointsAction;
 }

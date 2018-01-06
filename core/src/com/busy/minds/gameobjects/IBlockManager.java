@@ -1,6 +1,7 @@
 package com.busy.minds.gameobjects;
 
 /**
+ * interface zarządzania blokami
  * Created by Jan on 28.12.2017.
  */
 public interface IBlockManager {

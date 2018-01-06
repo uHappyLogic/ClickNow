@@ -22,7 +22,7 @@ public class VerticalAxis extends Actor{
         speed = 100;
         jeden = 1;
     }
-
+    /**zarys osi pionowej*/
     @Override
     public void draw(Batch batch, float parentAlpha) {
         ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -30,9 +30,9 @@ public class VerticalAxis extends Actor{
         shapeRenderer.setColor(0, 1, 1, 1);
         shapeRenderer.rect(getX(), getY() - getHeight() / 2, getWidth(), getHeight());
         shapeRenderer.end();
-
-
+        shapeRenderer.dispose();
     }
+    /**poruszanie się osi pionowej*/
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -47,13 +47,15 @@ public class VerticalAxis extends Actor{
     }
 
 
-
+    /**zmiana prędkości osi pionowej*/
     public void ChangeSpeed(float speed) {
         this.speed += speed;
 
     }
-
+    /**interfejs IBorderProvieder*/
     private IBordersProvider bordersProvider;
+    /**prędkość osi pionowej*/
     public float speed;
+    /**kierunek poruszania sie osi pionowej*/
     private int jeden;
 }
