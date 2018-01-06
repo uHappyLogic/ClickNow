@@ -77,6 +77,10 @@ public class HitBlock extends Actor {
         }
     }
 
+    public Color getColor(){
+        return this.color;
+    }
+
     /**metoda, która dodaje Igame IGameAction do listy gameActions*/
     public void AddGameAction(IGameAction gameAction) {
         gameActions.add(gameAction);
