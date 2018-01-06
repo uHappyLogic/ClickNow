@@ -113,12 +113,12 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         //akcje wykonywanepodczac trafienia spacja w blok
         //dodanie punktów
         greenBlock.AddGameAction(new AddPointsAction(pointsCounter, 100));
-        //zwiekszenie pretkosci osi pionowej
+        //zwiekszenie predkosci osi pionowej
         greenBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 10));
         //usuniecie tego bloku z osi poziomej
         greenBlock.AddGameAction(new RemoveBlockAction(this, greenBlock));
         //dodanie losowego bloku na oś poziomą
-        greenBlock.AddGameAction(new AddNewRandomBlock(this));
+        greenBlock.AddGameAction(new AddNewRandomBlock(this, greenBlock));
         //dodanie nowego bloku do listy
         hitBlocksToAdd.add(greenBlock);
 
@@ -133,17 +133,14 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
                 , Color.PURPLE
                 , this
         );
+
         purpleBlock.AddGameAction(new AddPointsAction(pointsCounter, 50-width));
         purpleBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 5));
         purpleBlock.AddGameAction(new RemoveBlockAction(this, purpleBlock));
-        purpleBlock.AddGameAction(new AddNewRandomBlock(this));
-        if (blockCount <=1){    //czemu sa 2 wiecej kwadraty? dwa sa to remove? ale to by było bez sensu 2 piewsza nie sa dodawane do listy? ale sa z niej jakos usuwane
-        purpleBlock.AddGameAction(new AddNewRandomBlock(this));
-        blockCount++;
-        }
+        purpleBlock.AddGameAction(new AddNewRandomBlock(this, purpleBlock));
+        purpleBlock.AddGameAction(new AddNewRandomBlock(this, purpleBlock));
 
         hitBlocksToAdd.add(purpleBlock);
-
     }
 
     /**metoda pozwalająca na dodanie czerwonego boku*/
@@ -160,22 +157,22 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         redBlock.AddGameAction(new AddPointsAction(pointsCounter, -width));
         redBlock.AddGameAction(new ChangeVerticalAxisAction(verticalAxis, 30));
         redBlock.AddGameAction(new RemoveBlockAction(this, redBlock));
-        redBlock.AddGameAction(new AddNewRandomBlock(this));
+        redBlock.AddGameAction(new AddNewRandomBlock(this, redBlock));
         hitBlocksToAdd.add(redBlock);
     }
-
-
 
     /**metoda zwracająca losową artosc z zakresu max, min*/
     private int GetRandomWidth(int max, int min) {
         Random r = new Random();
         return (int) (r.nextFloat() * (float)(max - min) + min);
     }
+
     /**metoda zwracająca losowy punkt na osi*/
     private Vector2 GetRandomPointOnAxis(float offset){
         Random r = new Random();
         return new Vector2(beginOfAxis).add(new Vector2((endOfAxis.x - this.beginOfAxis.x - offset) * r.nextFloat() , 0));//ta llinia
     }
+
     /**meoda tworząca obiekt klasy VerticalAxis o szerokości 5*/
     public void AddVertcalAxis(){
         float width = 5;
@@ -184,11 +181,13 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
             , width
             , this);
     }
+
     /**metoda zwracajaca os pionową*/
     public VerticalAxis ReturnVertical(){
         return verticalAxis;
 
     }
+
     /**ustawianie lerej granicy osi*/
     @Override
     public float GetLeftBorder() {
@@ -200,20 +199,17 @@ public class Axis extends Actor implements IBordersProvider, IBlockManager {
         return endOfAxis.x;
     }
     /**początek poziomej osi*/
-    Vector2 beginOfAxis;
+    private Vector2 beginOfAxis;
     /**koniec poziomej osi*/
-    Vector2 endOfAxis;
+    private Vector2 endOfAxis;
     /**obirkt osi pionowej*/
-    VerticalAxis verticalAxis;
+    private VerticalAxis verticalAxis;
     /**lista bloków*/
-    List<HitBlock> hitBlocks = new ArrayList<HitBlock>();
+    private List<HitBlock> hitBlocks = new ArrayList<HitBlock>();
     /**lista bloków do usunięcia*/
-    List<HitBlock> hitBlocksToRemove = new ArrayList<HitBlock>();
+    private List<HitBlock> hitBlocksToRemove = new ArrayList<>();
     /**lista bloków do dodania*/
-    List<HitBlock> hitBlocksToAdd = new ArrayList<HitBlock>();
+    private List<HitBlock> hitBlocksToAdd = new ArrayList<HitBlock>();
     /**obiekt klasy  PointCounter*/
     private PointsCounter pointsCounter;
-    /**liczba bonusowo dodanych blokw*/
-    private int blockCount;
-    private AddPointsAction addPointsAction;
 }
